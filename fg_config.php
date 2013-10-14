@@ -41,4 +41,13 @@ class faragostaresh_config
 		$config['release'] = '2013/10/10';
 		return $config;
     }
+
+    public static function config_table()
+    {
+		$config = array(
+			'cookcat', 'cooking', 'datav', 'foodmenu', 'gallery', 'locations', 
+			'marq', 'namebank', 'photocat', 'ratings', 'respics' 
+		);
+		return $config;
+    }
 }

@@ -9,14 +9,12 @@
 
 class faragostaresh_db
 {
-	public $db_table = array(
-		'cookcat', 'cooking', 'datav', 'foodmenu', 'gallery', 'locations', 
-		'marq', 'namebank', 'photocat', 'ratings', 'respics' 
-	);
+	public $db_table = array();
 
 	public function __construct()
 	{
 		$this->db_connect();
+		$this->db_table = faragostaresh_config::config_table();
 	}
 
 	public function db_connect()
@@ -24,7 +22,7 @@ class faragostaresh_db
 		$config = faragostaresh_config::config_db();
 		mysql_connect($config['host'], $config['username'], $config['password']);
         mysql_select_db($config['name']);
-        mysql_query("SET NAMES 'utf8'");
+        //mysql_query("SET NAMES 'utf8'");
 	}
 
 	public function db_select_id($table, $id)
@@ -52,7 +50,10 @@ class faragostaresh_db
         	}
 			while($row = mysql_fetch_assoc($result)) 
 			{
-				$rows[] = $row;
+				foreach ($row as $key => $value){ 
+    				$list[$key] = strip_tags($value, '<p><br><div><span><a><img>'); 
+				} 
+				$rows[] = $list;
 			}
 		}	
 		return $rows;
