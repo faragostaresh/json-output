@@ -18,12 +18,33 @@ class faragostaresh_tootls
         $get['table'] = self::tools_clean_vars($global, 'table', '', 'string');
         // Set id
         $get['id'] = self::tools_clean_vars($global, 'id', '', 'int');
-        // Set id
+        // Set start
         $get['start'] = self::tools_clean_vars($global, 'start', 0, 'int');
-        // Set id
+        // Set limit
         $get['limit'] = self::tools_clean_vars($global, 'limit', 100, 'int');
         // return
         return $get;
+    }
+
+    public static function tools_processing_post($global)
+    {
+		$post = array();
+        // Set title
+        $post['title'] = self::tools_clean_vars($global, 'title', '', 'string');
+        // Set phone
+        $post['phone'] = self::tools_clean_vars($global, 'phone', '', 'string');
+        // Set mobile
+        $post['mobile'] = self::tools_clean_vars($global, 'mobile', '', 'string');
+        // Set type
+        $post['type'] = self::tools_clean_vars($global, 'type', '', 'string');
+        // Set submiter
+        $post['submiter'] = self::tools_clean_vars($global, 'submiter', '', 'string');
+        // Set address
+        $post['address'] = self::tools_clean_vars($global, 'address', '', 'string');
+        // Set mail
+        $post['mail'] = self::tools_clean_vars($global, 'mail', '', 'mail');
+        // return
+        return $post;
     }
 
 	public static function tools_clean_vars(&$global, $key, $default = '', $type = 'int') 
@@ -65,6 +86,36 @@ class faragostaresh_tootls
 
 	public static function tools_json($json)
 	{
-		return json_encode($json);
+		if (is_array($json)) {
+			return json_encode($json);
+		}
+		return '';
+	}
+
+	public static function tools_mail($info)
+	{
+		// Get config
+		$config = faragostaresh_config::config_main();
+        // Set mail
+		$subject = 'Send information';
+		// Set headers
+		$headers  = '';
+		$headers .=  sprintf('From: %s' , $info['mail']) . "\r\n";
+        $headers .= 'MIME-Version: 1.0' . "\r\n";
+        $headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+        // Set message
+		$message  = '';
+		$message .= sprintf('<p>Title : %s</p>' , $info['title']);
+		$message .= sprintf('<p>Phone : %s</p>' , $info['phone']);
+		$message .= sprintf('<p>Mobile : %s</p>' , $info['mobile']);
+		$message .= sprintf('<p>Type : %s</p>' , $info['type']);
+		$message .= sprintf('<p>Submiter : %s</p>' , $info['submiter']);
+		$message .= sprintf('<p>Address : %s</p>' , $info['address']);
+		$message .= sprintf('<p>Mail : %s</p>' , $info['mail']);
+        // Send mail
+		if (mail($config['mail'], $subject, $message, $headers)) {
+			return array('message' => 'Mail send successfully' , 'status' => 1);
+		}
+		return array('message' => 'Error on send mail' , 'status' => 0);
 	}
 }

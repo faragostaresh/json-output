@@ -24,6 +24,7 @@ class faragostaresh_config
 		$config = array();
 		$config['url'] = '';
 		$config['path'] = '';
+		$config['mail'] = '';
 		return $config;
     }
 

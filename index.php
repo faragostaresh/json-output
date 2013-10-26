@@ -14,10 +14,10 @@ require_once 'fg_db.php';
 // set headers 
 header('Cache-Control: no-cache, must-revalidate');
 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-header('Content-type: application/json');
+//header('Content-type: application/json');
 header('Content-Type: text/html; charset=utf-8');
 // set default json
-$json = array('message' => 'empty');
+$output = array('message' => '');
 // Set get
 $get = faragostaresh_tootls::tools_processing_get($_GET);
 // Check get not empty
@@ -31,17 +31,24 @@ if (!empty($get) && !empty($get['part'])) {
 	    	// Get single item from DB
 	    	case 'single':
 	        	if (!empty($get['table']) && !empty($get['id'])) {
-	    	    	$json = $db->db_select_id($get['table'], $get['id']);
+	    	    	$output = $db->db_select_id($get['table'], $get['id']);
 	        	}
 		    	break;
 	    	// Get list of items from DB
         	case 'list':
             	if (!empty($get['table'])) {
-	    	    	$json = $db->db_select_list($get['table'], $get['start'], $get['limit']);
+	    	    	$output = $db->db_select_list($get['table'], $get['start'], $get['limit']);
 	        	}
+		    	break;
+		    // Send mail
+		    case 'mail':
+		        $post = faragostaresh_tootls::tools_processing_post($_POST);
+		        if (!empty($post)) {
+		        	$output = faragostaresh_tootls::tools_mail($post);
+		        }
 		    	break;
     	}
     }	
 }
 // Make json output
-echo faragostaresh_tootls::tools_json($json);
+echo faragostaresh_tootls::tools_json($output);

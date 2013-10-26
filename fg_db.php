@@ -51,16 +51,16 @@ class faragostaresh_db
 			while($row = mysql_fetch_assoc($result)) 
 			{
 				foreach ($row as $key => $value){ 
-    				$list[$key] = strip_tags($value, '<p><br><div><span><a><img>'); 
+    				if (!in_array($table, array('foodmenu'))) {
+    					$list[$key] = strip_tags($value, '<p><br><div><span><a><img>'); 
+    				} else {
+    					$list[$key] = $value; 
+    				}
 				} 
 				$rows[] = $list;
+
 			}
 		}	
 		return $rows;
-	}
-
-	public function db_set_log($sql)
-	{
-		return '';
 	}
 }
