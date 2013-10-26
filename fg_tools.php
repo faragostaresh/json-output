@@ -94,6 +94,16 @@ class faragostaresh_tootls
 
 	public static function tools_mail($info)
 	{
+		// Check information
+		if (empty($info['title']) || 
+			empty($info['phone']) || 
+			empty($info['mobile']) || 
+			empty($info['type']) || 
+			empty($info['submiter']) || 
+			empty($info['address'])
+		) {
+			return array('message' => 'Error , please set all needed information' , 'status' => 0);
+		}
 		// Get config
 		$config = faragostaresh_config::config_main();
         // Set mail
